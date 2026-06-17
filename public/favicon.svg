@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <!-- Rounded dark background matching our obsidian theme -->
+  <rect width="48" height="48" rx="14" fill="#030704" />
+  
+  <!-- Subtle glowing border ring -->
+  <circle cx="24" cy="24" r="18" fill="none" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.35" />
+  
+  <!-- Glowing leaf inside -->
+  <g transform="translate(12, 11) scale(1)">
+    <!-- Leaf body -->
+    <path d="M12 21A7.5 7.5 0 0 1 10.7 6.1C16.9 4.9 18.5 4.3 20.7 1.7C21.7 3.8 22.8 5.4 21.7 10.2A9.1 9.1 0 0 1 12 21Z" fill="#10b981" fill-opacity="0.15" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- Leaf veins -->
+    <path d="M9.8 23.1C9.8 19.4 12.5 16.2 16.2 16.2" stroke="#34d399" stroke-width="1.8" stroke-linecap="round" />
+    <path d="M9.8 23.1H22.7" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" />
+  </g>
+</svg>
