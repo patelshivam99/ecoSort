@@ -36,6 +36,30 @@ const fileToBase64 = (file) => {
   });
 };
 
+// Client-side rate limiting to protect Gemini API key quota
+const checkRateLimit = () => {
+  const now = Date.now();
+  const oneMinuteAgo = now - 60000;
+  
+  const scanTimestampsStr = localStorage.getItem('ecosort_scan_timestamps');
+  let timestamps = scanTimestampsStr ? JSON.parse(scanTimestampsStr) : [];
+  
+  // Filter out timestamps older than 1 minute
+  timestamps = timestamps.filter(time => time > oneMinuteAgo);
+  
+  // Enforce limit: Max 5 scans per minute
+  const MAX_SCANS = 5;
+  if (timestamps.length >= MAX_SCANS) {
+    const oldestRemaining = timestamps[0];
+    const secondsToWait = Math.ceil((oldestRemaining + 60000 - now) / 1000);
+    throw new Error(`Rate Limit Exceeded: To protect API quotas, you are limited to ${MAX_SCANS} scans per minute. Please wait ${secondsToWait} seconds before scanning again.`);
+  }
+  
+  // Record current scan timestamp
+  timestamps.push(now);
+  localStorage.setItem('ecosort_scan_timestamps', JSON.stringify(timestamps));
+};
+
 /**
  * Classifies all waste items in an image file using Gemini Vision API
  * @param {File} imageFile - The uploaded image file
@@ -45,6 +69,9 @@ export const classifyWasteImage = async (imageFile) => {
   if (!imageFile) {
     throw new Error("No image file provided.");
   }
+
+  // Enforce rate limiting
+  checkRateLimit();
 
   // Check if API key is active
   const apiKey = getApiKey();
